@@ -1,0 +1,301 @@
+#Importing libraries
+import os
+import time
+import subprocess
+import json
+
+
+#Importing Libraries installed from anaconda prompt
+import wolframalpha
+import requests
+import webbrowser
+import wikipedia
+import datetime
+import instaloader
+import pyjokes
+import pywhatkit
+
+
+#Importing speech recognition library
+import speech_recognition as sr
+import pyttsx3
+
+
+#Initiating voice recognition with pyttsx3 engine 
+engine = pyttsx3.init('sapi5')
+voices = engine.getProperty('voices')
+engine.setProperty("voice",'voices[0].id')
+
+
+#Defining function for speak
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+
+#Defining function to wish
+def wishMe():
+    hour = datetime.datetime.now().hour
+    if hour >= 0 and hour < 12:
+        speak("Hello,Good Morning Shreyas...Have a good day!")
+        print("Hello,Good Morning Shreyas...Have a good day!")
+    elif hour >= 12 and hour <=18:
+        speak("Hello,Good Afternoon Shreyas...I hope you had your lunch")
+        print("Hello,Good Afternoon Shreyas...I hope you had your lunch")
+    else:
+        speak("Good evening Shreyas...Whats up?")
+        print("Good evening Shreyas...Whats up?")
+
+
+#Defining function to take commands
+def takeCommand():
+    r = sr.Recognizer()
+    with  sr.Microphone() as source:
+        print("I AM LISTENING...")
+        audio = r.listen(source)
+        
+        try:
+            statement = r.recognize_google(audio,language='en-in')
+            print(f"user said:{statement}\n")
+            
+        except:
+            speak("Can you please say that again...I didnt really get that")
+            return "None"
+        return statement
+
+
+
+#Its a simplified main function
+speak("HAI...I AM YOUR PERSONAL ASSISTANT BUILT BY MR SHREYAS S...LOADING YOUR VIRTUAL A I ASSISTANT JARVIS...")
+wishMe()
+
+if __name__=='__main__':
+    
+    while True:
+        speak("How can i help you ?")
+        statement = takeCommand().lower()
+        if statement == 0:
+            continue
+            
+        if "good bye" in statement or "bye" in statement or "ok bye" in statement or "stop jarvis" in statement:
+            speak("Bye for now...Your A I assistant is shutting down...call me when you need something")
+            print("Bye for now...Your A I assistant is shutting down...call me when you need something")
+            break
+        
+        if 'wikipedia' in statement or "who" in statement or "tell me about" in statement:
+            speak("searching wikipedia...")
+            statement = statement.replace("wikipedia"," ")
+            results = wikipedia.summary(statement , sentences = 3)
+            speak("According to wikipedia....")
+            print("According to wikipedia....")
+            print(results)
+            speak(results)
+        
+        if 'instagram' in statement or "profile" in statement:
+            mod = instaloader.Instaloader()
+            speak("whats the name of instagram?")
+            username = input("Enter the correct user name")
+            mod.download_profile(username,profile_pic_only = True)
+            speak("Your Instagram picture is saved have a look at your folder")
+            print("Your Instagram picture is saved have a look at your folder")
+            time.sleep(5)
+        
+        if 'play' in statement:
+            song =  statement.replace("play"," ")
+            speak("playing" + song)
+            pywhatkit.playonyt(song)
+             
+        elif "open youtube" in statement:
+            webbrowser.open_new_tab("https://www.youtube.com")
+            speak("Youtube is now open")
+            print("Youtube is now open")
+            time.sleep(5)
+            
+        elif "songs in youtube" in statement:
+            webbrowser.open_new_tab("https://www.youtube.com/watch?v=uTDMVdzIhqQ&list=RDuTDMVdzIhqQ&start_radio=1")
+            speak("Songs are now playing")
+            print("Songs are now playing")
+            time.sleep(5)
+            
+        elif "open github" in statement:
+            webbrowser.open_new_tab("https://github.com/")
+            speak("Opening Github for you")
+            print("Opening Github for you")
+            time.sleep(5)
+            
+        elif "open google" in statement:
+            webbrowser.open_new_tab("https://www.google.com")
+            speak("Google search is now open")
+            print("Google search is now open")
+            time.sleep(5)
+        
+        elif "open netflix" in statement:
+            webbrowser.open_new_tab("https://www.netflix.com/browse")
+            speak("Opening netflix for you...Happy Binge watching")
+            print("Opening netflix for you...Happy Binge watching")
+            time.sleep(5)
+                
+        elif "maps" in statement:
+            webbrowser.open_new_tab("https://www.google.com/maps/")
+            speak("Opening Google maps for you")
+            print("Opening Google maps for you")
+            time.sleep(5)
+        
+        elif "calendar" in statement:
+            webbrowser.open_new_tab("https://www.google.com/calendar/about/")
+            speak("Opening calendar for you")
+            print("Opening calendar for you")
+            time.sleep(5)
+            
+        elif "shopping" in statement:
+            webbrowser.open_new_tab("https://www.amazon.in/")
+            speak("I found Amazon to shop..Happy shopping")
+            print("I found Amazon to shop..Happy shopping")
+            time.sleep(5)
+            
+        elif "movies" in statement:
+            webbrowser.open_new_tab("https://www.imdb.com/")
+            speak("Opening IMDB..It helps you to see  the movie reviews and ratings")
+            print("Opening IMDB..It helps you to see  the movie reviews and ratings")
+            time.sleep(5)
+                   
+        elif "open games" in statement:
+            webbrowser.open_new_tab("https://stadia.google.com/")
+            speak("Games is now open..Enjoy gaming")
+            print("Games is now open..Enjoy gaming")
+            time.sleep(5)
+        
+        elif "open coronavirus topic" in statement:
+            webbrowser.open_new_tab("https://timesofindia.indiatimes.com/topic/covid-19-news")
+            speak("covid-19 news is now open..Please wear mask and stay safe")
+            print("covid-19 news is now open..Please wear mask and stay safe")
+            time.sleep(5)
+            
+        elif "business" in statement or "economic times" in statement:
+            webbrowser.open_new_tab("https://economictimes.indiatimes.com/")
+            speak("Opening Business news from economic times")
+            print("Opening Business news from economic times")
+            time.sleep(5)
+            
+        elif "stock exchange" in statement or "stocks" in statement:
+            webbrowser.open_new_tab("https://www.nseindia.com/")
+            speak("Opening National stock exchange for you")
+            print("Opening National stock exchange for you")
+            time.sleep(5)   
+        
+        elif "sensex" in statement:
+            webbrowser.open_new_tab("https://www.bseindia.com/sensex/code/16/")
+            speak("Have a look at live sensex..And you can tell me is it raising or falling")
+            print("Have a look at live sensex..And you can tell me is it raising or falling")
+            time.sleep(5)
+                
+        elif "open gmail" in statement or "open email" in statement:
+            webbrowser.open_new_tab("https://mail.google.com/mail/u/0/#inbox")
+            speak("Gmail is now open")
+            print("Gmail is now open")
+            time.sleep(5)
+            
+        elif "weather" in statement:
+            api_key="8ef61edcf1c576d65d836254e11ea420"
+            base_url="https://api.openweathermap.org/data/2.5/weather?"
+            speak("whats the city name")
+            city_name=takeCommand()
+            complete_url=base_url+"appid="+api_key+"&q="+city_name
+            response = requests.get(complete_url)
+            x=response.json()
+            if x["cod"]!="404":
+                y=x["main"]
+                current_temperature = y["temp"]
+                current_humidiy = y["humidity"]
+                z = x["weather"]
+                weather_description = z[0]["description"]
+                speak(" Temperature in kelvin unit is " +
+                      str(current_temperature) +
+                      "\n humidity in percentage is " +
+                      str(current_humidiy) +
+                      "\n description  " +
+                      str(weather_description))
+                print(" Temperature in kelvin unit = " +
+                      str(current_temperature) +
+                      "\n humidity (in percentage) = " +
+                      str(current_humidiy) +
+                      "\n description = " +
+                      str(weather_description))
+
+            else:
+                speak(" City Not Found ")
+            
+      
+                
+        elif "time" in statement:
+            strTime = datetime.datetime.now().strftime("%H:%M:%S")
+            speak(f"The time is {strTime}")
+            print(f"The time is {strTime}")
+        
+        elif "who are you" in statement or "what can you do" in statement or "hey jarvis" in statement:
+            speak("Hello, I am Jarvis the virtual assistant. I am here to help you get things done. You can ask a question, I can also do tasks for you such as open google,youtube,predict time,read any news headlines and many more")
+            print("Hello, I am Jarvis the virtual assistant. I am here to help you get things done. You can ask a question, I can also do tasks for you such as open google,youtube,predict time,read any news headlines and many more")
+        
+        elif "who made you" in statement or "who created you" in statement or "who discovered you" in statement:
+            speak("I WAS BUILT BY MR SHREYAS")
+            print("I WAS BUILT BY MR SHREYAS")
+            
+        elif "open stack overflow" in statement or "stack" in statement:
+            webbrowser.open_new_tab("https://stackoverflow.com/questions")
+            speak("Opening stackoverflow for you")
+            print("Opening stackoverflow for you")
+            time.sleep(5)
+            
+        elif "news" in statement:
+            webbrowser.open_new_tab("https://timesofindia.indiatimes.com/home/headlines")
+            speak("Here is the latest news from times of India...Reading news makes you well informed")
+            print("Here is the latest news from times of India...Reading news makes you well informed")
+            time.sleep(5)
+            
+        elif "search" in statement:
+            statement = statement.replace("search"," ")
+            webbrowser.open_new_tab("statement")
+            time.sleep(5)
+        
+        elif "ask" in statement:
+            speak("I can answer to computational problems and geographical questions too! Ask any question i will try to solve it for you!")
+            question = takeCommand()
+            app_id = "R2K75H-7ELALHR35X"
+            client = wolframalpha.Client('R2K75H-7ELALHR35X')
+            res = client.query(question)
+            answer = next(res.results).text
+            speak(answer)
+            print(answer)
+        
+        elif "age" in statement or "old" in statement:
+            speak('I am still young..I will be that forever')
+            print('I am still young..I will be that forever')
+        
+        elif "do you have feelings for human" in statement or "what do you think of humans" in statement:
+            speak("I think all animals are amazing,Including human")
+            print("I think all animals are amazing,Including human")
+            
+        elif "covid-19 protocols" in statement or "covid-19" in statement:
+            speak("Get Vaccinated,Wear a mask,Stay 6 feet away from others,Wash your hands often,Clean and disinfect")
+            print("Get Vaccinated,Wear a mask,Stay 6 feet away from others,Wash your hands often,Clean and disinfect")
+            
+        elif "what are you doing" in statement or "whats up" in statement:
+            speak("Right now,I am answering to you")
+            print("Right now,I am answering to you")
+            
+        elif "where are you" in statement:
+            speak("I Live right here in your device")
+            print("I Live right here in your device")
+        
+        elif "how you doing" in statement or "how are you doing" in statement:
+            speak("I am fine..Thank you for asking..I hope you are staying safe and healthy")
+            print("I am fine..Thank you for asking..I hope you are staying safe and healthy")
+        
+        elif "jokes" in statement or "joke" in statement:
+            speak(pyjokes.get_joke())
+                 
+        elif "log off" in statement or "sign out" in statement or "shutdown" in statement:
+            speak("Your PC will shutdown now-Please make sure you have saved all your work")
+            print("Your PC will shutdown now-Please make sure you have saved all your work")
+            subprocess.call(['shutdown',"/l"])
+time.sleep(3)
